@@ -64,7 +64,7 @@ public class EmployeeController {
      * @return
      */
     @PostMapping
-    public R<String> insert(HttpServletRequest request,@RequestBody Employee employee){
+    public R<String> save(HttpServletRequest request,@RequestBody Employee employee){
         log.info("新增员工的信息：{}",employee.toString());
         // 设置初始密码123456，进行md5加密
         employee.setPassword(DigestUtils.md5DigestAsHex("123456".getBytes()));
@@ -140,19 +140,6 @@ public class EmployeeController {
         }
         return R.error("查询员工信息失败");
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
     /**
      * 用户退出
      * @return

@@ -31,14 +31,22 @@ public class GlobalExceptionHandler {
         log.info(e.getMessage());
         // contains包含
         if (e.getMessage().contains("Duplicate entry")){
-/*
             String[] split = e.getMessage().split(" ");
             String msg = split[2]+"已存在";
             return R.error(msg);
-
-            */
-            return R.error("该账号已存在");
         }
         return R.error("未知错误");
+    }
+    /**
+     * 异常处理方法
+     * @ExceptionHandler(Exception.class) 表示该方法将处理所有类型的异常。
+     * 如果希望处理特定类型的异常，可以将 Exception.class 替换为其他异常类。
+     * @ExceptionHandler 注解只能用于 Controller 类中的方法上，不能用于其他类或方法上
+     * @return
+     */
+    @ExceptionHandler(CustomException.class) // sql语句唯一键重复异常
+    public R<String> exceptionHandler(CustomException e){
+        log.info(e.getMessage());
+        return R.error(e.getMessage());
     }
 }

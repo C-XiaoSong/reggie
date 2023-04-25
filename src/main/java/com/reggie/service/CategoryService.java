@@ -9,4 +9,5 @@ import com.reggie.pojo.Category;
  * @date：2023/4/21 8:59
  * @注释：
  */public interface CategoryService extends IService<Category> {
+    void remove(Long id);
 }
