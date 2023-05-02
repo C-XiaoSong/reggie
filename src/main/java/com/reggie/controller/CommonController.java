@@ -1,10 +1,10 @@
 package com.reggie.controller;
 
 /**
- * @author：陈晓松
- * @CLASS_NAME：CommonController
- * @date：2023/4/23 8:49
- * @注释：通用的Controller
+ * @author： 陈晓松
+ * @CLASS_NAME： CommonController
+ * @date： 2023/4/23 8:49
+ * @注释： 通用的Controller
  */
 
 import com.reggie.utis.R;
@@ -87,8 +87,5 @@ public class CommonController {
             throw new RuntimeException(e);
         }
     }
-
-
-
 
 }

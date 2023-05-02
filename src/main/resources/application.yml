@@ -28,4 +28,4 @@ server:
   port: 8080
 #定义一个图片存储路径
 reggie:
-  path: S:\xiaosong\reggie\src\main\resources\img
+  path: S:\xiaosong\reggie\src\main\resources\img\
