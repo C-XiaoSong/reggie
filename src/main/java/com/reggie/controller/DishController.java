@@ -98,16 +98,13 @@ public class DishController {
     }
 
     /**
-     * 删除
+     * 删除,批量删除
      * @param ids
      * @return
      */
     @DeleteMapping
-    public R<String> delete(String ids){
-        String[] split = ids.split(",");
-        for (String id : split) {
-            dishService.removeById(id);
-        }
+    public R<String> delete(@RequestParam List<Long> ids){
+        dishService.removeByIds(ids);
         return R.success("删除菜品成功");
     }
 
@@ -144,8 +141,8 @@ public class DishController {
      * @param ids 接受过来的菜品 ID
      * @return
      */
-    @PostMapping("/status/{id}")
-    public R<String> status(@PathVariable("id") Long statusId,Long[] ids){
+    @PostMapping("/status/{statusId}")
+    public R<String> status(@PathVariable("statusId") Long statusId , @RequestParam Long[] ids){
         // Request URL: http://localhost:8080/dish/status/0?ids=1653305586199752706,1653305531279536129
         System.out.println("第一个："+statusId); // 对应的是0或者1 ，当起售时是 1，停售时是 0
         System.out.println("第二个："+ids); // 对应的是ids后面的值
@@ -159,8 +156,24 @@ public class DishController {
         dishService.update(updateWrapper);
         return R.success("状态修改成功");
     }
-
-
+    
+    /**
+    * @Author: 陈晓松
+    * @Description: 根据条件查询对应的菜品数据
+    * @DateTime: 15:09 2023/5/4
+    * @Params: [dish]
+    * @Return com.reggie.utis.R<java.util.List<com.reggie.pojo.Dish>>
+    */
+    @GetMapping("/list")
+    public R<List<Dish>> list (Dish dish){
+        LambdaQueryWrapper<Dish> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(dish.getCategoryId() != null,Dish::getCategoryId,dish.getCategoryId());
+        // 添加条件，查询状态为1的（起售状态）的菜品
+        queryWrapper.eq(Dish::getStatus,1);
+        queryWrapper.orderByAsc(Dish::getSort).orderByDesc(Dish::getUpdateTime);
+        List<Dish> list = dishService.list(queryWrapper);
+        return R.success(list);
+    }
 
 
 

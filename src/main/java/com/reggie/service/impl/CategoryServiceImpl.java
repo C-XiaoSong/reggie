@@ -10,7 +10,6 @@ import com.reggie.service.CategoryService;
 import com.reggie.service.DishService;
 import com.reggie.service.SetmealService;
 import com.reggie.utis.CustomException;
-import lombok.val;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -46,7 +45,7 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category> i
         // 添加条件，根据分类ID进行查询
         setmealLambdaQueryWrapper.eq(Setmeal::getCategoryId,id);
         // 查询当前分类是否关联了套餐，如果关联抛出一个异常
-        val count2 = setmealService.count(setmealLambdaQueryWrapper);
+        int count2 = setmealService.count(setmealLambdaQueryWrapper);
         if (count2 > 0){
             // 自定义业务异常类
             throw new CustomException("当前分类下关联了套餐，不能删除");
