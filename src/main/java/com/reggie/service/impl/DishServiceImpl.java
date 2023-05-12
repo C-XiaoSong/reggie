@@ -74,7 +74,7 @@ public class DishServiceImpl extends ServiceImpl<DishMapper, Dish> implements Di
     }
 
     /**
-     * 修改菜品信息以及口味信息
+     * 修改菜品信息以及口味信息（两张表）
      * @param dishDto
      */
     @Override
@@ -95,5 +95,4 @@ public class DishServiceImpl extends ServiceImpl<DishMapper, Dish> implements Di
         // 批量保存
         dishFlavorService.saveBatch(flavors);
     }
-
 }

@@ -8,7 +8,7 @@ package com.reggie.utis;
  */
 
 /**
- * RuntimeException：运行时异常
+ * RuntimeException：自定义运行时异常
  */
 public class CustomException extends RuntimeException {
     public CustomException(String message){

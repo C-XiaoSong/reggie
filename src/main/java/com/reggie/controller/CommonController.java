@@ -87,5 +87,4 @@ public class CommonController {
             throw new RuntimeException(e);
         }
     }
-
 }

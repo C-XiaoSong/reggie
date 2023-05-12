@@ -14,7 +14,7 @@ import java.util.List;
  * @author：陈晓松
  * @CLASS_NAME：WebMvcConfig
  * @date：2023/4/18 17:56
- * @注释：
+ * @注释：配置类
  */
 @Configuration
 @Slf4j
