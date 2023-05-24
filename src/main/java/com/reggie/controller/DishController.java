@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.reggie.dto.DishDto;
 import com.reggie.pojo.Category;
 import com.reggie.pojo.Dish;
+import com.reggie.pojo.DishFlavor;
 import com.reggie.service.CategoryService;
 import com.reggie.service.DishFlavorService;
 import com.reggie.service.DishService;
@@ -164,7 +165,7 @@ public class DishController {
     * @Params: [dish]
     * @Return com.reggie.utis.R<java.util.List<com.reggie.pojo.Dish>>
     */
-    @GetMapping("/list")
+    /*@GetMapping("/list")
     public R<List<Dish>> list (Dish dish){
         LambdaQueryWrapper<Dish> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.eq(dish.getCategoryId() != null,Dish::getCategoryId,dish.getCategoryId());
@@ -173,6 +174,41 @@ public class DishController {
         queryWrapper.orderByAsc(Dish::getSort).orderByDesc(Dish::getUpdateTime);
         List<Dish> list = dishService.list(queryWrapper);
         return R.success(list);
+    }*/
+
+    @GetMapping("/list")
+    public R<List<DishDto>> list (Dish dish){
+        LambdaQueryWrapper<Dish> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(dish.getCategoryId() != null,Dish::getCategoryId,dish.getCategoryId());
+        // 添加条件，查询状态为1的（起售状态）的菜品
+        queryWrapper.eq(Dish::getStatus,1);
+        queryWrapper.orderByAsc(Dish::getSort).orderByDesc(Dish::getUpdateTime);
+        List<Dish> list = dishService.list(queryWrapper);
+
+        List<DishDto> dtoList = list.stream().map(item -> {
+            DishDto dishDto = new DishDto();
+            // 把item拷贝（复制）到dishDto上
+            BeanUtils.copyProperties(item,dishDto); // 经过拷贝除了categoryName有了其他的属性值也有了
+
+            // item就是遍历出每一个菜品对象
+            Long categoryId = item.getCategoryId(); // 分类ID
+            // 用分类ID去查分类表 把分类名称查出来（需要分类的Service）
+            Category category = categoryService.getById(categoryId); // 根据ID查询出来的分类对象
+
+            // 当前菜品的ID
+            Long dishId = item.getId();
+            LambdaQueryWrapper<DishFlavor> flavorLambdaQueryWrapper = new LambdaQueryWrapper();
+            flavorLambdaQueryWrapper.eq(DishFlavor::getDishId,dishId);
+            List<DishFlavor> dishFlavorList = dishFlavorService.list(flavorLambdaQueryWrapper);
+            dishDto.setFlavors(dishFlavorList);
+
+            // 获取category里面的分类名称Name值
+            String categoryName = category.getName();
+            // 需要给categoryName复制，需要new一个DishDto
+            dishDto.setCategoryName(categoryName);
+            return dishDto;
+        }).collect(Collectors.toList());
+        return R.success(dtoList);
     }
 
 

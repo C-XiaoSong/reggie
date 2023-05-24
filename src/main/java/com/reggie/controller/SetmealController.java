@@ -113,4 +113,22 @@ public class SetmealController {
         setmealService.update(updateWrapper);
         return R.success("修改状态成功");
     }
+
+    /**
+    * @Author: 陈晓松
+    * @Description: 根据条件查询套餐数据
+    * @Params: [setmeal]
+    * @Return com.reggie.utis.R<java.util.List<com.reggie.pojo.Setmeal>>
+    */
+    @GetMapping("/list")
+    public R<List<Setmeal>> list(Setmeal setmeal) {
+        LambdaQueryWrapper<Setmeal> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(setmeal.getCategoryId() != null,Setmeal::getCategoryId,setmeal.getCategoryId());
+        queryWrapper.eq(setmeal.getStatus() != null,Setmeal::getStatus,setmeal.getStatus());
+        queryWrapper.orderByDesc(Setmeal::getUpdateTime);
+        List<Setmeal> list = setmealService.list(queryWrapper);
+        return R.success(list);
+    }
+
+
 }

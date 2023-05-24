@@ -78,15 +78,12 @@ public class CategoryController {
     @GetMapping("/list")
     public R<List<Category>> list(Category category){
         // 条件构造器
-        LambdaQueryWrapper<Category> queryWrapper = new LambdaQueryWrapper<Category>();
+        LambdaQueryWrapper<Category> queryWrapper = new LambdaQueryWrapper();
         queryWrapper.eq(category.getType() != null,Category::getType,category.getType());
         // 添加排序条件，根据sort，根据更新时间，
         queryWrapper.orderByAsc(Category::getSort).orderByDesc(Category::getUpdateTime);
         List<Category> list = categoryService.list(queryWrapper);
         return R.success(list);
     }
-
-
-
 
 }
